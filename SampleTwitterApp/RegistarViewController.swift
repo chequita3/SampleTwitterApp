@@ -20,6 +20,7 @@ class RegistarViewController: UIViewController {
     
  
     @IBAction func tappedRegistarButton(_ sender: UIButton) {
+        print("あい")
         let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
         changeRequest?.displayName = userName.text
         changeRequest?.commitChanges { error in
