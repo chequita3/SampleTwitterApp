@@ -7,38 +7,29 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
+import FirebaseAuth
+import FirebaseFirestore
+
 
 class RegistarViewController: UIViewController {
     
-    
-
-
     @IBOutlet weak var registarButton: UIButton!
     @IBOutlet weak var userImageView: UIImageView! 
-    @IBOutlet weak var userID: UITextField!
     @IBOutlet weak var userName: UITextField!
+    let user = Auth.auth().currentUser
     
- 
     @IBAction func tappedRegistarButton(_ sender: UIButton) {
-        print("あい")
-        let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
-        changeRequest?.displayName = userName.text
-        changeRequest?.commitChanges { error in
-          // ...
-        }
+        uploadImage ()
+        
     }
-    
-    
 
-
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         registarButton.layer.cornerRadius = 10
         userName.delegate = self
-        userID.delegate = self
+
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -61,17 +52,53 @@ class RegistarViewController: UIViewController {
         }
     }
     
+    func uploadImage () {
+        if let user = user {
+            //ストレージサーバのURLを取得
+            let storage = Storage.storage().reference(forURL: "gs://sampletwitterapp-2a133.appspot.com")
+            
+            // パス: あなた固有のURL/profileImage/{user.uid}.jpeg
+            let imageRef = storage.child("profileImage").child("\(user.uid).jpeg")
+            
+            //保存したい画像のデータを変数として持つ
+            var ProfileImageData: Data = Data()
+            
+            //プロフィール画像が存在すれば
+            if userImageView.image != nil {
+                
+            //画像を圧縮
+            ProfileImageData = (userImageView.image?.jpegData(compressionQuality: 0.01))!
+                
+            }
+            
+            //storageに画像を送信
+            imageRef.putData(ProfileImageData, metadata: nil) { (metaData, error) in
+                
+                //エラーであれば
+                if error != nil {
+                    
+                    print(error.debugDescription)
+                    return  //これより下にはいかないreturn
+                }
+            }
+        }
+    }
     
-
-
-    
-    
-    
+    func uploadName () {
+        if let user = user{
+        let uid = user.uid
+        let name = self.userName.text
+            let docData = ["name" : name as Any] as [String : Any]
+            
+            Firestore.firestore().collection("users").document(uid).setData(docData)
+        
+}
+}
 }
 
 extension RegistarViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        let userIDIsEmpty = userID.text?.isEmpty ?? true
+
         let userNameIsEmpty = userName.text?.isEmpty ?? true
         var userImageViewIsEmpty = true
         
@@ -80,7 +107,7 @@ extension RegistarViewController: UITextFieldDelegate {
         }else{
             userImageViewIsEmpty = false
         }
-        if userIDIsEmpty || userNameIsEmpty || userImageViewIsEmpty {
+        if userNameIsEmpty || userImageViewIsEmpty {
             registarButton.isEnabled = false
         }else{
             registarButton.isEnabled = true

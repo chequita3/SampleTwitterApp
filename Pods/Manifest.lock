@@ -357,6 +357,9 @@ PODS:
   - Firebase/Firestore (8.6.1):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 8.6.0)
+  - Firebase/Storage (8.6.1):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 8.6.0)
   - FirebaseAnalytics (8.6.0):
     - FirebaseAnalytics/AdIdSupport (= 8.6.0)
     - FirebaseCore (~> 8.0)
@@ -407,6 +410,14 @@ PODS:
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/UserDefaults (~> 7.4)
     - PromisesObjC (< 3.0, >= 1.2)
+  - FirebaseStorage (8.6.0):
+    - FirebaseCore (~> 8.0)
+    - GTMSessionFetcher/Core (~> 1.5)
+  - FirebaseStorageUI (12.0.0):
+    - FirebaseStorage (~> 8.0)
+    - SDWebImage (~> 5.6)
+  - FirebaseUI/Storage (12.0.2):
+    - FirebaseStorageUI (~> 12.0)
   - GoogleAppMeasurement (8.6.0):
     - GoogleAppMeasurement/AdIdSupport (= 8.6.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
@@ -476,11 +487,16 @@ PODS:
   - nanopb/encode (2.30908.0)
   - PKHUD (5.3.0)
   - PromisesObjC (2.0.0)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
 
 DEPENDENCIES:
   - Firebase
   - Firebase/Auth
   - Firebase/Firestore
+  - Firebase/Storage
+  - FirebaseUI/Storage
   - PKHUD (~> 5.0)
 
 SPEC REPOS:
@@ -494,6 +510,9 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseFirestore
     - FirebaseInstallations
+    - FirebaseStorage
+    - FirebaseStorageUI
+    - FirebaseUI
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
@@ -504,6 +523,7 @@ SPEC REPOS:
     - nanopb
     - PKHUD
     - PromisesObjC
+    - SDWebImage
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -515,6 +535,9 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 3721920bde3a9a6d5aa093c1d25e9d3e47f694af
   FirebaseFirestore: 7b8bd72aff4d3ad91498343e81fdbaa994ce8abe
   FirebaseInstallations: 0ede6ffcd215b8f93c19d9b06c1c54e2d4107e98
+  FirebaseStorage: 2765944230981e63f8bd2938d9d5819158b7c34c
+  FirebaseStorageUI: 9f5b32264e77dc073dec45f00c5b3a77e5ca901e
+  FirebaseUI: b04b32ead3a6dcd5a50829e14b8f3f6d044d5d62
   GoogleAppMeasurement: 2c0c6e2a7ab3fe730ade6379f732bdefb46f50b0
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleUtilities: 8de2a97a17e15b6b98e38e8770e2d129a57c0040
@@ -525,7 +548,8 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
 
-PODFILE CHECKSUM: b07f4ea764e7e73ce21b0e238398877a6897f876
+PODFILE CHECKSUM: 2d0c8becf27909e5d02fbef34e25c3ff1762952c
 
 COCOAPODS: 1.10.1
