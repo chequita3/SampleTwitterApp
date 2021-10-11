@@ -21,6 +21,7 @@ class RegistarViewController: UIViewController {
     
     @IBAction func tappedRegistarButton(_ sender: UIButton) {
         uploadImage ()
+        uploadName ()
         
     }
 
@@ -86,12 +87,10 @@ class RegistarViewController: UIViewController {
     
     func uploadName () {
         if let user = user{
-        let uid = user.uid
-        let name = self.userName.text
-            let docData = ["name" : name as Any] as [String : Any]
-            
-            Firestore.firestore().collection("users").document(uid).setData(docData)
-        
+            let db = Firestore.firestore()
+            guard let name = self.userName.text else { return }
+
+            db.collection("users").document(user.uid).setData(["name" : name])
 }
 }
 }
