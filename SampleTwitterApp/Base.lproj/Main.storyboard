@@ -160,29 +160,19 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@takayaman" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2M-PU-d5e">
-                                                    <rect key="frame" x="66" y="36.666666666666664" width="316" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="どすこいどすこい" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zLv-Pc-NMj">
-                                                    <rect key="frame" x="66" y="65.666666666666671" width="316" height="52.333333333333329"/>
+                                                    <rect key="frame" x="66" y="97.666666666666671" width="316" height="20.333333333333329"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="zLv-Pc-NMj" firstAttribute="top" secondItem="c2M-PU-d5e" secondAttribute="bottom" constant="8" id="2XR-2E-lw4"/>
-                                                <constraint firstAttribute="trailing" secondItem="c2M-PU-d5e" secondAttribute="trailing" constant="8" id="575-Aw-PQe"/>
                                                 <constraint firstItem="5F5-e6-X48" firstAttribute="leading" secondItem="Wsu-xA-wux" secondAttribute="leading" constant="8" id="JVy-6E-1XT"/>
                                                 <constraint firstAttribute="trailing" secondItem="uLb-rY-d17" secondAttribute="trailing" constant="8" id="LzG-In-EfM"/>
                                                 <constraint firstItem="zLv-Pc-NMj" firstAttribute="leading" secondItem="5F5-e6-X48" secondAttribute="trailing" constant="8" id="Mgh-Ia-cQG"/>
                                                 <constraint firstItem="uLb-rY-d17" firstAttribute="top" secondItem="Wsu-xA-wux" secondAttribute="top" constant="8" id="VZp-o6-mE1"/>
                                                 <constraint firstAttribute="trailing" secondItem="zLv-Pc-NMj" secondAttribute="trailing" constant="8" id="dPa-0a-PCJ"/>
-                                                <constraint firstItem="c2M-PU-d5e" firstAttribute="top" secondItem="uLb-rY-d17" secondAttribute="bottom" constant="8" id="e5o-is-0hT"/>
-                                                <constraint firstItem="c2M-PU-d5e" firstAttribute="leading" secondItem="5F5-e6-X48" secondAttribute="trailing" constant="8" id="hBu-mk-pnE"/>
                                                 <constraint firstItem="5F5-e6-X48" firstAttribute="top" secondItem="Wsu-xA-wux" secondAttribute="top" id="lsq-RV-ZxI"/>
                                                 <constraint firstAttribute="bottom" secondItem="zLv-Pc-NMj" secondAttribute="bottom" constant="8" id="pGc-TI-yFc"/>
                                                 <constraint firstItem="uLb-rY-d17" firstAttribute="leading" secondItem="5F5-e6-X48" secondAttribute="trailing" constant="8" id="qXT-m3-a9n"/>
@@ -191,7 +181,6 @@
                                         <connections>
                                             <outlet property="iconImageView" destination="5F5-e6-X48" id="SjC-WT-uby"/>
                                             <outlet property="nameLabel" destination="uLb-rY-d17" id="xNX-XN-GAF"/>
-                                            <outlet property="screenNameLabel" destination="c2M-PU-d5e" id="Pn4-PA-1tB"/>
                                             <outlet property="textContentLabel" destination="zLv-Pc-NMj" id="2X4-jb-DY8"/>
                                         </connections>
                                     </tableViewCell>

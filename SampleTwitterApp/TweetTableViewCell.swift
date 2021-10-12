@@ -9,13 +9,7 @@ import UIKit
 
 class TweetTableViewCell: UITableViewCell{
     @IBOutlet weak var iconImageView: UIImageView!
-    
-    
     @IBOutlet weak var nameLabel: UILabel!
-    
-    
-    @IBOutlet weak var screenNameLabel: UILabel!
-    
     @IBOutlet weak var textContentLabel: UILabel!
 
     func fill(tweet: Tweet) {
