@@ -22,7 +22,11 @@ class TimeLineViewController: UITableViewController {
         super.viewDidLoad()
             }
     
-        
+    //    何個のセルを生成するか？
+        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            // itemsの配列内の要素数分を指定
+            items.count
+        }
     // cellがタップされたのを検知したときに実行する処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("セルがタップされました！")
@@ -40,19 +44,16 @@ class TimeLineViewController: UITableViewController {
 
 
     
-//    何個のセルを生成するか？
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // tweetsの配列内の要素数分を指定
-        items.count
-    }
+
     
 //    描画するセルを指定する
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TweetTableViewCellを表示したいので、TweetTableViewCellを取得
+        // TweetTableViewCellを表示したいので、identifier:TweetTableViewCellのセルを選択。カスタムクラスのTweetTableViewCell型にキャスティングする
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetTableViewCell") as! TweetTableViewCell
         
-        // TweetTableViewCellの描画内容となるtweetを渡す
+        //TweetTableViewCellクラスのconfigure関数にitemsのプロパティを入れて実行
         cell.configure(item: items[indexPath.row])
+//        セルを返す
         return cell
     }
     

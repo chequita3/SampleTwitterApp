@@ -16,6 +16,7 @@ class TweetTableViewCell: UITableViewCell{
     @IBOutlet private weak var userNameLabel: UILabel!
     @IBOutlet private weak var tweetLabel: UILabel!
     
+//    外部（Item構造体から）からデータを受け取って、Outletを通じてviewに反映させる
     func configure(item: Item) {
         iconImageView.image = item.icon
         userNameLabel.text = item.name
