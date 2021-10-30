@@ -22,6 +22,9 @@ class RegistarViewController: UIViewController {
     @IBAction func tappedRegistarButton(_ sender: UIButton) {
         uploadImage ()
         uploadName ()
+        UserDefaults.standard.set(self.userName.text, forKey: "userName")
+        UserDefaults.standard.set(self.userImageView.image, forKey: "userImageView")
+        self.performSegue(withIdentifier: "toTimeLineVC", sender: self)
         
     }
 

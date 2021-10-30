@@ -12,4 +12,5 @@ target 'SampleTwitterApp' do
   pod 'PKHUD', '~> 5.0'
   pod 'Firebase/Storage'
   pod 'FirebaseUI/Storage'
+  pod 'EMAlertController'
 end

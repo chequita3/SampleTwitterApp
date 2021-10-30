@@ -344,6 +344,7 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.7):
     - BoringSSL-GRPC/Interface (= 0.0.7)
   - BoringSSL-GRPC/Interface (0.0.7)
+  - EMAlertController (1.0.2)
   - Firebase (8.6.1):
     - Firebase/Core (= 8.6.1)
   - Firebase/Auth (8.6.1):
@@ -492,6 +493,7 @@ PODS:
   - SDWebImage/Core (5.11.1)
 
 DEPENDENCIES:
+  - EMAlertController
   - Firebase
   - Firebase/Auth
   - Firebase/Firestore
@@ -503,6 +505,7 @@ SPEC REPOS:
   trunk:
     - abseil
     - BoringSSL-GRPC
+    - EMAlertController
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -528,6 +531,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
+  EMAlertController: 471e4630309e5ae843ef71f502d6b58525b22c60
   Firebase: e84d95f6d3a91f634abc384f0751c434cb3aecfa
   FirebaseAnalytics: 8f32ae54ad42754f503354782575c4ddfc1425c3
   FirebaseAuth: 223adeeb2262b417532e89bf06a960e3a0a1e9e4
@@ -550,6 +554,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
 
-PODFILE CHECKSUM: 2d0c8becf27909e5d02fbef34e25c3ff1762952c
+PODFILE CHECKSUM: cf1363c99df0ac8bc23a5dbe6da3e81c8ce06893
 
 COCOAPODS: 1.10.1
