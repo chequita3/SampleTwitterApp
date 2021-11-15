@@ -50,12 +50,11 @@ class RegistarViewController: UIViewController {
         //        sendDBModelのメソッドを利用して画像データをfireStorageに送る
         self.sendDBModel.sendProfileImageData(data: data!)
         
-        if TweetTableViewCell().tweetLabel != nil {
-            //        タイムラインビューへ画面遷移する
+
+//                   タイムラインビューへ画面遷移する
             self.performSegue(withIdentifier: "toTimeLineVC", sender: self)
-        }
 //        ツイートビューへ画面遷移
-        self.performSegue(withIdentifier: "toTweetVC", sender: self)
+//        self.performSegue(withIdentifier: "toTweetVC", sender: self)
     }
     
     
