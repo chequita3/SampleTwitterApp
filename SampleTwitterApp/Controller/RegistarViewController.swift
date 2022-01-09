@@ -48,7 +48,7 @@ class RegistarViewController: UIViewController {
         let data = self.userImageView.image?.jpegData(compressionQuality: 0.01)
         
         //        sendDBModelのメソッドを利用して画像データをfireStorageに送る
-        self.sendDBModel.sendProfileImageData(data: data!)
+        self.sendDBModel.uploadImage(data: data!)
         
 
 //                   タイムラインビューへ画面遷移する

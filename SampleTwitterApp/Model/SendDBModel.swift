@@ -8,42 +8,29 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
-import CoreMedia
+import FirebaseStorage
 
 class SendDBModel{
     
-    init(){
-        
+    init() {}
+    
+    func uploadImage(data: Data){
+        let image = UIImage(data: data)
+        let imageData = image!.jpegData(compressionQuality: 0.1)
+        let user = Auth.auth().currentUser
+        if let user = user{
+            let ID = user.uid
+            let uploadRef = Storage.storage().reference(withPath: "profileImage/\(ID).jpg")
+            uploadRef.putData(imageData!, metadata: nil) { (metadata, error) in
+                if error != nil {
+                    print("error!!")
+                    return
+                }
+                print("completed")
+                
+            }
+        }
     }
 
     
-    func sendProfileImageData(data:Data){
-        
-        let image = UIImage(data: data)
-        let profileImage = image!.jpegData(compressionQuality: 0.1)
-        
-        let imageRef = Storage.storage().reference().child("profileImage").child("\(UUID().uuidString + String(Date().timeIntervalSince1970)).jpeg")
-        
-        imageRef.putData(profileImage!, metadata: nil) { (metadata, error) in
-            
-            if error != nil{
-                
-                return
-            }
-            
-            imageRef.downloadURL { (url, error) in
-                
-                if error != nil{
-                    
-                    return
-                }
-                
-                UserDefaults.standard.set(url?.absoluteString, forKey: "userImage")
-            }
-        }
-        
-        
-        
-    }
-
 }

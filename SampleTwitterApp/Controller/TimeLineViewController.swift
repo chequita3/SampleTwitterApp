@@ -9,13 +9,21 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
-
+struct Contents {
+    var icon: UIImage
+    var name: String
+    var tweet: String
+}
 
 class TimeLineViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
-    //    ここにアイコン、名前、tweetの配列を入れる
-    var items: [Item] = []
     var db = Firestore.firestore()
+    let user = Auth.auth().currentUser
+    //    ここにアイコン、名前、tweetの配列を入れる
+    var contents: [Contents] = [Contents(icon: UIImage(systemName: "sun.min")!,
+                                         name: "name",
+                              tweet: "tweet")]
+
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -24,13 +32,15 @@ class TimeLineViewController: UIViewController,UITableViewDelegate,UITableViewDa
         tableView.delegate = self
         tableView.dataSource = self
         
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadData()
-        print("\(items)")
+        self.loadData()
+        self.getDoc()
+        self.tableView.reloadData()
     }
+ 
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -38,24 +48,14 @@ class TimeLineViewController: UIViewController,UITableViewDelegate,UITableViewDa
     //    何個のセルを生成するか？
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // itemsの配列内の要素数分を指定
-        items.count
+        self.contents.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TweetTableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TweetTableViewCell", for: indexPath) as! TweetTableViewCell
+        cell.configure(contents: contents[indexPath.row])
         tableView.rowHeight = 200
-        let icon = cell.contentView.viewWithTag(1) as! UIImageView
-        let name = cell.contentView.viewWithTag(2) as! UILabel
-        let tweetContext = cell.contentView.viewWithTag(3) as! UILabel
-        //        tweetのlabelを可変にする（セルが合わせてくれる）
-        tweetContext.numberOfLines = 0
-        icon.image = self.items[indexPath.row].icon
-        name.text = self.items[indexPath.row].name
-        tweetContext.text = self.items[indexPath.row].tweet
-        
-        
-        
         return cell
     }
     
@@ -67,32 +67,30 @@ class TimeLineViewController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func loadData(){
-        //        Tweetのdocumentsを引っ張ってくる←postDateの新しい順に
-        //        itemsに入れる[Item]型として
-        db.collection("Tweet").order(by: "postDate").addSnapshotListener { (snapShot, error) in
+        let tweetRef = self.db.collection("tweet")
+        
+        
+            tweetRef.document(self.user!.uid).setData([
             
-            self.items = []
-            if error != nil{
-                
-                return
-                
-            }
-            
-            if let snapShotDoc = snapShot?.documents{
-                
-                for doc in snapShotDoc{
-                    
-                    let data = doc.data()
-                    if let tweet = data["Tweet"] as? String{
-                        
-                        let itemModel = Item(icon: UserDefaults.standard.object(forKey: "userImage") as! UIImage, name: UserDefaults.standard.object(forKey: "userName") as! String, tweet: tweet,docID: doc.documentID)
-                        self.items.append(itemModel)
-                    }
-                }
-                self.tableView.reloadData()
-            }
-        }
+            "tweet" : "asobo" as String,
+            "postDate" : Timestamp(date: Date())]
+        )
     }
     
-    
+        func getDoc(){
+            db.collection("tweet").getDocuments { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+
+                }else {
+                    for document in querySnapshot!.documents {
+                        print("\(document.documentID) => \(document.data())")
+                        
+                        
+                    }
+                }
+            }
+        }
+        
+
 }

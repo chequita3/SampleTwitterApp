@@ -7,10 +7,19 @@
 
 import Foundation
 import UIKit
+import FirebaseFirestore
 
-struct Item {
-    var icon: UIImage
-    var name: String
-    var tweet: String
-    var docID: String
+class Item: NSObject {
+    var icon: UIImage?
+    var name: String?
+    var tweet: String?
+    
+    init(document: QueryDocumentSnapshot) {
+        self.icon = UserDefaults.standard.object(forKey: "userImage") as? UIImage
+        let Dic = document.data()
+        self.name = Dic["name"] as? String
+        self.tweet = Dic["tweet"] as? String
+    }
+    
+    
 }
