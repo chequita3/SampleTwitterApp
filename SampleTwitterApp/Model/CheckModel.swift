@@ -1,16 +1,14 @@
 //
-//  CameraUsageModel.swift
+//  CheckModel.swift
 //  SampleTwitterApp
 //
-//  Created by 高山航輔 on 2021/10/30.
+//  Created by 高山航輔 on 2022/01/10.
 //
-
 
 import Foundation
 import Photos
 
-class CameraUsageModel{
-    
+class CheckModel {
     
     func showCheckPermission(){
            PHPhotoLibrary.requestAuthorization { (status) in

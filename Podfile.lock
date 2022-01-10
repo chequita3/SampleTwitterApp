@@ -338,6 +338,7 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - ActiveLabel (1.1.0)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -491,8 +492,10 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
+  - ViewAnimator (3.1.0)
 
 DEPENDENCIES:
+  - ActiveLabel
   - EMAlertController
   - Firebase
   - Firebase/Auth
@@ -500,10 +503,13 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseUI/Storage
   - PKHUD (~> 5.0)
+  - SDWebImage (~> 5.0)
+  - ViewAnimator
 
 SPEC REPOS:
   trunk:
     - abseil
+    - ActiveLabel
     - BoringSSL-GRPC
     - EMAlertController
     - Firebase
@@ -527,9 +533,11 @@ SPEC REPOS:
     - PKHUD
     - PromisesObjC
     - SDWebImage
+    - ViewAnimator
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
+  ActiveLabel: 5e3f4de79a1952d4604b845a0610d4776e4b82b3
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   EMAlertController: 471e4630309e5ae843ef71f502d6b58525b22c60
   Firebase: e84d95f6d3a91f634abc384f0751c434cb3aecfa
@@ -553,7 +561,8 @@ SPEC CHECKSUMS:
   PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  ViewAnimator: a9ceed80266e00fd435ec4fb99b2df64d580d0e4
 
-PODFILE CHECKSUM: cf1363c99df0ac8bc23a5dbe6da3e81c8ce06893
+PODFILE CHECKSUM: c8dd923930cbd15f049c047073e0a800a97a31d6
 
 COCOAPODS: 1.10.1

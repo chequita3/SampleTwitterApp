@@ -13,4 +13,7 @@ target 'SampleTwitterApp' do
   pod 'Firebase/Storage'
   pod 'FirebaseUI/Storage'
   pod 'EMAlertController'
+  pod 'SDWebImage', '~> 5.0'
+  pod "ViewAnimator"
+  pod 'ActiveLabel'
 end

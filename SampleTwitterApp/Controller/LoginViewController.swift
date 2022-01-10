@@ -157,7 +157,8 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                 HUD.flash(.labeledSuccess(title: "ログイン完了", subtitle: nil), onView: self.view, delay: 1) { _ in
 
                     //ここにログインが完了した時に画面遷移などのコードを記述して下さい。
-                    self.performSegue(withIdentifier: "toRegisterViewController", sender: self)
+                    let registerVC = self.storyboard?.instantiateViewController(withIdentifier: "registerVC") as! RegisterViewController
+                    self.navigationController?.pushViewController(registerVC, animated: true)
                 }
             }
         }
