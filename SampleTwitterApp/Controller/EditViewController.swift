@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseAuth
+import SDWebImage
 
 class EditViewController: UIViewController {
     
@@ -39,6 +40,11 @@ class EditViewController: UIViewController {
         if UserDefaults.standard.object(forKey: "userImage") != nil {
             userImageString = UserDefaults.standard.object(forKey: "userImage") as! String
         }
+        
+        profileImageView.sd_setImage(with: URL(string: userImageString), completed: nil)
+        profileImageView.layer.cornerRadius = 40
+        userNameLabel.text = userName
+        tweetTextView.text = passText
     }
     
     override func viewWillAppear(_ animated: Bool) {

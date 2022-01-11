@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import PKHUD
+import SDWebImage
 
 class TweetViewController: UIViewController {
 
@@ -29,7 +30,11 @@ class TweetViewController: UIViewController {
         if UserDefaults.standard.object(forKey: "userImage") != nil {
             userImageString = UserDefaults.standard.object(forKey: "userImage") as! String
         }
-
+        
+        profileImageView.sd_setImage(with: URL(string: userImageString), completed: nil)
+        profileImageView.layer.cornerRadius = 40
+        userNameLabel.text = userName
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,11 +90,12 @@ class TweetViewController: UIViewController {
         //sendDBModelに編集内容を渡す
         let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString)
         
-        //sendDataメソッドにroomNumberを渡して使用する
+        //sendDataメソッドを使用する
         sendDBModel.sendData()
         
         //selectVCに戻る
         self.navigationController?.popViewController(animated: true)
+        print("ツイートしました")
     }
     
 }

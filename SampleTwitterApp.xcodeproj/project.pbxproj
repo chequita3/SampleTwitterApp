@@ -24,6 +24,7 @@
 		98C512B426C0156D000471A6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C512B226C0156D000471A6 /* Main.storyboard */; };
 		98C512B626C0156E000471A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98C512B526C0156E000471A6 /* Assets.xcassets */; };
 		98C512B926C0156E000471A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C512B726C0156E000471A6 /* LaunchScreen.storyboard */; };
+		98DAE2B3278DD76C0077B35B /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DAE2B2278DD76C0077B35B /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		98C512B526C0156E000471A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		98C512B826C0156E000471A6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		98C512BA26C0156E000471A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98DAE2B2278DD76C0077B35B /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		EFC54D9A06BE46763E888143 /* Pods-SampleTwitterApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleTwitterApp.debug.xcconfig"; path = "Target Support Files/Pods-SampleTwitterApp/Pods-SampleTwitterApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +93,7 @@
 				98A12DCF278C0E8300C54F4F /* EditViewController.swift */,
 				98A12DCD278C086500C54F4F /* TweetViewController.swift */,
 				98962B9B278C898400EECD9E /* HashTagViewController.swift */,
+				98DAE2B2278DD76C0077B35B /* DetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98DAE2B3278DD76C0077B35B /* DetailViewController.swift in Sources */,
 				98C512B126C0156D000471A6 /* LoginViewController.swift in Sources */,
 				98C512AD26C0156D000471A6 /* AppDelegate.swift in Sources */,
 				98A12DC8278BF64900C54F4F /* CheckModel.swift in Sources */,

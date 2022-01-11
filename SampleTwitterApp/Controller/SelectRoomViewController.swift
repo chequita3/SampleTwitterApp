@@ -11,7 +11,9 @@ import Photos
 import ActiveLabel
 import SDWebImage
 
-class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,loadOKDelegate {
+
+    
     
     var loadDBModel = LoadDBModel()
     //var roomArray = ["今日の1枚","爆笑報告場(草)","景色が好き！","夜景写真軍団","今日のごはん"]
@@ -25,7 +27,19 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
 
         tableView.delegate = self
         tableView.dataSource = self
+        loadDBModel.loadOKDelegate = self
         // Do any additional setup after loading the view.
+    }
+    
+    func loadOK(check: Int) {
+        if check == 1{
+            print("ロード完了、セルを表示します")
+            tableView.reloadData()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 756
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,7 +54,7 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.isHidden = false
+        //tableView.isHidden = false
         
         //viewを表示する際のアニメーションの設定
         let animation = [AnimationType.vector(CGVector(dx: 0, dy: 30))]
@@ -67,7 +81,7 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         profileImageView.sd_setImage(with: URL(string: loadDBModel.dataSets[indexPath.row].profileImage), completed: nil)
         
         //アイコンを丸くする
-        profileImageView.layer.cornerRadius = 50
+        profileImageView.layer.cornerRadius = 40
         
         //ユーザー名
         let userNameLabel = cell.contentView.viewWithTag(2) as! UILabel

@@ -8,10 +8,17 @@
 import Foundation
 import Firebase
 
+protocol loadOKDelegate {
+    
+    func loadOK(check:Int)
+}
+
 class LoadDBModel{
     
     var dataSets = [DataSet]()
     let db = Firestore.firestore()
+    
+    var loadOKDelegate:loadOKDelegate?
     
     func loadContents() {
         
@@ -32,10 +39,47 @@ class LoadDBModel{
                         
                         self.dataSets.append(newDataSet)
                         self.dataSets.reverse()
-                        print("データの表示に成功しました")
+                        self.loadOKDelegate?.loadOK(check: 1)
+                        print("データ受信します")
                     }
                 }
             }
         }
     }
+    
+    
+    func loadHashTag(hashTag:String){
+            //addSnapShotListnerは値が更新される度に自動で呼ばれる
+            db.collection("#\(hashTag)").order(by:"postDate").addSnapshotListener { (snapShot, error) in
+                
+                self.dataSets = []
+                
+                if error != nil{
+                    print(error.debugDescription)
+                    return
+                }
+                if let snapShotDoc = snapShot?.documents{
+       
+                    for doc in snapShotDoc{
+                        let data = doc.data()
+                        if let userID = data["userID"] as? String ,let userName = data["userName"] as? String, let tweet = data["tweet"] as? String,let profileImage = data["userImage"] as? String,let postDate = data["postDate"] as? Double {
+                            
+                            let newDataSet = DataSet(userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, postDate: postDate)
+
+                            self.dataSets.append(newDataSet)
+                            self.dataSets.reverse()
+                            self.loadOKDelegate?.loadOK(check: 1)
+
+                        }
+                        
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            
+        }
+    
 }
