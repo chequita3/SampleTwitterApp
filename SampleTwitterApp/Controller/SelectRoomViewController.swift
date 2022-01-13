@@ -38,9 +38,9 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         }
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 756
-    }
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 756
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -73,6 +73,7 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        tableView.rowHeight = 200
 
         //アイコン画像をセルにセット
         let profileImageView = cell.contentView.viewWithTag(1) as! UIImageView
@@ -112,7 +113,8 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return 211
+        tableView.estimatedRowHeight = 211
+        return UITableView.automaticDimension
     
     }
     

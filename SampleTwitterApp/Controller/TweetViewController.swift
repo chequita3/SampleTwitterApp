@@ -15,14 +15,21 @@ class TweetViewController: UIViewController {
 
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var wordCountLabel: UILabel!
     @IBOutlet weak var tweetTextView: UITextView!
     @IBOutlet weak var sendButton: UIButton!
     
     var userName = String()
     var userImageString = String()
+    var maxWordCount: Int = 140
+    let placeholder: String = "テキストを記入..."
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tweetTextView.delegate = self
+        tweetTextView.text = placeholder
         
         if UserDefaults.standard.object(forKey: "userName") != nil {
             userName = UserDefaults.standard.object(forKey: "userName") as! String
@@ -96,6 +103,38 @@ class TweetViewController: UIViewController {
         //selectVCに戻る
         self.navigationController?.popViewController(animated: true)
         print("ツイートしました")
+    }
+    
+}
+
+extension TweetViewController: UITextViewDelegate {
+    
+func textView(_ tweetTextView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    let existingLines = tweetTextView.text.components(separatedBy: .newlines)//既に存在する改行数
+    let newLines = text.components(separatedBy: .newlines)//新規改行数
+    let linesAfterChange = existingLines.count + newLines.count - 1 //最終改行数。-1は編集したら必ず1改行としてカウントされるから。
+    return linesAfterChange <= 7 && tweetTextView.text.count + (text.count - range.length) <= maxWordCount
+}
+    
+func textViewDidChange(_ tweetTextView: UITextView) {
+    let existingLines = tweetTextView.text.components(separatedBy: .newlines)//既に存在する改行数
+    if existingLines.count <= 7 {
+        self.wordCountLabel.text = "\(maxWordCount - tweetTextView.text.count)"
+    }
+}
+        
+    func textViewDidBeginEditing(_ tweetTextView: UITextView) {
+        if tweetTextView.text == placeholder {
+            tweetTextView.text = nil
+            tweetTextView.textColor = .darkText
+        }
+    }
+ 
+    func textViewDidEndEditing(_ tweetTextView: UITextView) {
+        if tweetTextView.text.isEmpty {
+            tweetTextView.textColor = .darkGray
+            tweetTextView.text = placeholder
+        }
     }
     
 }
