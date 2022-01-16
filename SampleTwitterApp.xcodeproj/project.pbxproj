@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		28D8B43FFD785382046EAB54 /* Pods_SampleTwitterApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81246ACEA11C4D586587736B /* Pods_SampleTwitterApp.framework */; };
+		987984E4279289B900872051 /* UIColorExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987984E3279289B900872051 /* UIColorExtention.swift */; };
 		98962B9C278C898400EECD9E /* HashTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98962B9B278C898400EECD9E /* HashTagViewController.swift */; };
 		98A12DC6278BF53B00C54F4F /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A12DC5278BF53B00C54F4F /* RegisterViewController.swift */; };
 		98A12DC8278BF64900C54F4F /* CheckModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A12DC7278BF64900C54F4F /* CheckModel.swift */; };
@@ -31,6 +32,7 @@
 		7E4050A7309D513B4383A78D /* Pods-SampleTwitterApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleTwitterApp.release.xcconfig"; path = "Target Support Files/Pods-SampleTwitterApp/Pods-SampleTwitterApp.release.xcconfig"; sourceTree = "<group>"; };
 		81246ACEA11C4D586587736B /* Pods_SampleTwitterApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SampleTwitterApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98747B6D26E5DE62001ADE2C /* SampleTwitterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleTwitterApp.entitlements; sourceTree = "<group>"; };
+		987984E3279289B900872051 /* UIColorExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtention.swift; sourceTree = "<group>"; };
 		98962B9B278C898400EECD9E /* HashTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTagViewController.swift; sourceTree = "<group>"; };
 		98A12DC5278BF53B00C54F4F /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		98A12DC7278BF64900C54F4F /* CheckModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckModel.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				98A12DCB278BF9DB00C54F4F /* SendDBModel.swift */,
 				98A12DD1278C2D0000C54F4F /* LoadDBModel.swift */,
 				98A12DD3278C2D4100C54F4F /* DataSet.swift */,
+				987984E3279289B900872051 /* UIColorExtention.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				98A12DCA278BF7C100C54F4F /* SelectRoomViewController.swift in Sources */,
 				98962B9C278C898400EECD9E /* HashTagViewController.swift in Sources */,
 				98A12DD0278C0E8300C54F4F /* EditViewController.swift in Sources */,
+				987984E4279289B900872051 /* UIColorExtention.swift in Sources */,
 				98A12DD2278C2D0000C54F4F /* LoadDBModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

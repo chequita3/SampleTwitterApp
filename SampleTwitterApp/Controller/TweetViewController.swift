@@ -17,19 +17,25 @@ class TweetViewController: UIViewController {
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var wordCountLabel: UILabel!
     @IBOutlet weak var tweetTextView: UITextView!
+    @IBOutlet weak var placeHolder: UILabel!
     @IBOutlet weak var sendButton: UIButton!
     
     var userName = String()
     var userImageString = String()
     var maxWordCount: Int = 140
-    let placeholder: String = "テキストを記入..."
+
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tweetTextView.delegate = self
-        tweetTextView.text = placeholder
+        
+        self.wordCountLabel.text = "\(maxWordCount - tweetTextView.text.count)"
+        
+        sendButton.isEnabled = false
+        sendButton.backgroundColor = UIColor.rgb(red: 255, green: 221, blue: 187)
+        print("ボタンは押せません")
         
         if UserDefaults.standard.object(forKey: "userName") != nil {
             userName = UserDefaults.standard.object(forKey: "userName") as! String
@@ -42,6 +48,18 @@ class TweetViewController: UIViewController {
         profileImageView.layer.cornerRadius = 40
         userNameLabel.text = userName
         
+        NotificationCenter.default.addObserver(self, selector: #selector(showKeyboad), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+    }
+    
+    @objc func showKeyboad(notification:NSNotification) {
+        let keyboadFrame = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        
+        guard let keyboadMiniY = keyboadFrame?.minY else { return }
+        let sendButtonMaxY = sendButton.frame.maxY
+        let distance = sendButtonMaxY - keyboadMiniY + 20
+        let transform = CGAffineTransform(translationX: 0, y: -distance)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: {self.view.transform = transform}, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,10 +104,6 @@ class TweetViewController: UIViewController {
     //編集内容をfireBaseにSendDBModelを使用して送信する
     @IBAction func send(_ sender: Any) {
         
-        if tweetTextView.text.isEmpty == true{
-            print("ツイートテキストに何も書いていません")
-            return
-        }
         
         //ハッシュタグがついていれば、DBのハッシュタグのコレクションに保存
         searchHashTag()
@@ -107,34 +121,62 @@ class TweetViewController: UIViewController {
     
 }
 
+//140文字制限のエクステンション
 extension TweetViewController: UITextViewDelegate {
     
+    //TextView内の文字数が改行数含めて140以内じゃないと文字入力できなくする
 func textView(_ tweetTextView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    let existingLines = tweetTextView.text.components(separatedBy: .newlines)//既に存在する改行数
-    let newLines = text.components(separatedBy: .newlines)//新規改行数
-    let linesAfterChange = existingLines.count + newLines.count - 1 //最終改行数。-1は編集したら必ず1改行としてカウントされるから。
-    return linesAfterChange <= 7 && tweetTextView.text.count + (text.count - range.length) <= maxWordCount
+    
+    //既存の改行した数
+    let existingLines = tweetTextView.text.components(separatedBy: .newlines)
+    
+    //新規改行数
+    let newLines = text.components(separatedBy: .newlines)
+    
+    //最終的な改行数。-1は編集したら必ず1改行としてカウントされるから。
+    let linesAfterChange = existingLines.count + newLines.count - 1
+    
+    //最終的な改行数が8以内かつ、ツイート文字数が140カウント以内であればtrueを返し、文字入力が可能になる
+    return linesAfterChange <= 8 && tweetTextView.text.count + (text.count - range.length) <= maxWordCount
 }
     
+    //TextViewの内容が変わるたびに実行される
 func textViewDidChange(_ tweetTextView: UITextView) {
-    let existingLines = tweetTextView.text.components(separatedBy: .newlines)//既に存在する改行数
-    if existingLines.count <= 7 {
+    
+    //既に存在する改行数
+    let existingLines = tweetTextView.text.components(separatedBy: .newlines)
+    //改行数が8以内であればwordCountLabelに文字数を反映
+    if existingLines.count <= 8 {
         self.wordCountLabel.text = "\(maxWordCount - tweetTextView.text.count)"
+        
+        
     }
 }
         
+    //文字入力を始めたら、プレースホルダーを消去
     func textViewDidBeginEditing(_ tweetTextView: UITextView) {
-        if tweetTextView.text == placeholder {
-            tweetTextView.text = nil
-            tweetTextView.textColor = .darkText
-        }
+        self.placeHolder.isHidden = true
     }
  
-    func textViewDidEndEditing(_ tweetTextView: UITextView) {
-        if tweetTextView.text.isEmpty {
-            tweetTextView.textColor = .darkGray
-            tweetTextView.text = placeholder
+    
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        if tweetTextView.text.isEmpty == true{
+            sendButton.isEnabled = false
+            sendButton.backgroundColor = UIColor.rgb(red: 255, green: 221, blue: 187)
+            print("ボタンは押せません2")
+        } else {
+            sendButton.isEnabled = true
+            sendButton.backgroundColor = UIColor.rgb(red: 255, green: 141, blue: 0)
+            print("ボタン使用可能")
         }
     }
+        
+    }
     
-}
+
+    
+    
+    
+
+
+
