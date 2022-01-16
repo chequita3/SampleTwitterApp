@@ -18,11 +18,14 @@ class TweetViewController: UIViewController {
     @IBOutlet weak var wordCountLabel: UILabel!
     @IBOutlet weak var tweetTextView: UITextView!
     @IBOutlet weak var placeHolder: UILabel!
+    @IBOutlet weak var contentImageView: UIImageView!
+    @IBOutlet weak var addImageButton: UIButton!
     @IBOutlet weak var sendButton: UIButton!
     
     var userName = String()
     var userImageString = String()
     var maxWordCount: Int = 140
+
 
     
     
@@ -30,6 +33,8 @@ class TweetViewController: UIViewController {
         super.viewDidLoad()
         
         tweetTextView.delegate = self
+        let checkModel = CheckModel()
+        checkModel.showCheckPermission()
         
         self.wordCountLabel.text = "\(maxWordCount - tweetTextView.text.count)"
         
@@ -48,19 +53,30 @@ class TweetViewController: UIViewController {
         profileImageView.layer.cornerRadius = 40
         userNameLabel.text = userName
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showKeyboad), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
+        //キーボードが出現した時にshowKeyboadメソッドをNotificationCenterのエントリーに加える
+//        NotificationCenter.default.addObserver(self, selector: #selector(showKeyboad), name: UIResponder.keyboardWillShowNotification, object: nil)
+//
+//        //キーボードが出現した時にhideKeyboadメソッドをNotificationCenterのエントリーに加える
+//        NotificationCenter.default.addObserver(self, selector: #selector(hideKeyboad), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    @objc func showKeyboad(notification:NSNotification) {
-        let keyboadFrame = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
-        
-        guard let keyboadMiniY = keyboadFrame?.minY else { return }
-        let sendButtonMaxY = sendButton.frame.maxY
-        let distance = sendButtonMaxY - keyboadMiniY + 20
-        let transform = CGAffineTransform(translationX: 0, y: -distance)
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: {self.view.transform = transform}, completion: nil)
-    }
+    //キーボードが出現した時のメソッド。ボタンとテキストビューの位置を調整する
+//    @objc func showKeyboad(notification:NSNotification) {
+//        print("キーボード出たよ")
+//        let keyboadFrame = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+//
+//        guard let keyboadMiniY = keyboadFrame?.minY else { return }
+//        let sendButtonMaxY = sendButton.frame.maxY
+//        let distance = sendButtonMaxY - keyboadMiniY + 20
+//        let transform = CGAffineTransform(translationX: 0, y: -distance)
+//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: {self.view.transform = transform}, completion: nil)
+//    }
+//
+//    //キーボードが隠れた時のメソッド。動いたビューの位置を元に戻す
+//    @objc func hideKeyboad(notification:NSNotification){
+//        print("キーボード隠れたよ")
+//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: {self.view.transform = .identity}, completion: nil)
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
            super.viewWillAppear(animated)
@@ -72,7 +88,7 @@ class TweetViewController: UIViewController {
     //viewをタップしたときにキーボードを閉じる
        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
            
-           tweetTextView.resignFirstResponder()
+           self.view.endEditing(true)
            
        }
     
@@ -93,12 +109,17 @@ class TweetViewController: UIViewController {
                 for match in regex.matches(in: hashTagText! as String, options: [], range: NSRange(location: 0, length: hashTagText!.length)) {
 
 
-                    let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString)
+                    let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString, contentImageString: <#String#>)
                     sendDBModel.sendHashTag(hashTag: hashTagText!.substring(with: match.range))
                 }
             }catch{
                 
             }
+    }
+    
+    
+    @IBAction func addImage(_ sender: Any) {
+        showAlert()
     }
     
     //編集内容をfireBaseにSendDBModelを使用して送信する
@@ -109,7 +130,7 @@ class TweetViewController: UIViewController {
         searchHashTag()
         
         //sendDBModelに編集内容を渡す
-        let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString)
+        let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageString: <#String#>)
         
         //sendDataメソッドを使用する
         sendDBModel.sendData()
@@ -173,6 +194,92 @@ func textViewDidChange(_ tweetTextView: UITextView) {
         
     }
     
+
+
+extension TweetViewController: UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+        picker.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    func doCamera(){
+            
+            let sourceType:UIImagePickerController.SourceType = .camera
+            
+            //カメラ利用可能かチェック
+            if UIImagePickerController.isSourceTypeAvailable(.camera){
+                
+                let cameraPicker = UIImagePickerController()
+                cameraPicker.allowsEditing = true
+                cameraPicker.sourceType = sourceType
+                cameraPicker.delegate = self
+                self.present(cameraPicker, animated: true, completion: nil)
+                
+                
+            }
+            
+        }
+        
+        
+        func doAlbum(){
+            
+            let sourceType:UIImagePickerController.SourceType = .photoLibrary
+            
+            //カメラ利用可能かチェック
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+                
+                let cameraPicker = UIImagePickerController()
+                cameraPicker.allowsEditing = true
+                cameraPicker.sourceType = sourceType
+                cameraPicker.delegate = self
+                self.present(cameraPicker, animated: true, completion: nil)
+                
+                
+            }
+            
+        }
+        
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            
+            
+            if info[.originalImage] as? UIImage != nil{
+                
+                let selectedImage = info[.originalImage] as! UIImage
+                contentImageView.image = selectedImage
+                picker.dismiss(animated: true, completion: nil)
+                
+            }
+            
+        }
+    //アラート
+    func showAlert(){
+        
+        let alertController = UIAlertController(title: "選択", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
+        
+        let action1 = UIAlertAction(title: "カメラ", style: .default) { (alert) in
+            
+            self.doCamera()
+            
+        }
+        let action2 = UIAlertAction(title: "アルバム", style: .default) { (alert) in
+            
+            self.doAlbum()
+            
+        }
+
+        let action3 = UIAlertAction(title: "キャンセル", style: .cancel)
+        
+        
+        alertController.addAction(action1)
+        alertController.addAction(action2)
+        alertController.addAction(action3)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
+}
 
     
     
