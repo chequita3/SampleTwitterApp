@@ -105,11 +105,11 @@ class EditViewController: UIViewController {
         }
         
         //sendDBModelに編集内容を渡す
-        let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageString: <#String#>)
+//        let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageData: <#String#>)
         
         //sendDataメソッドにroomNumberを渡して使用する
 //        sendDBModel.sendData(roomNumber: String(roomNumber))
-        sendDBModel.sendData()
+//        sendDBModel.sendData()
         //selectVCに戻る
         self.navigationController?.popViewController(animated: true)
     }

@@ -107,9 +107,9 @@ class TweetViewController: UIViewController {
             do{
                 let regex = try NSRegularExpression(pattern: "#\\S+", options: [])
                 for match in regex.matches(in: hashTagText! as String, options: [], range: NSRange(location: 0, length: hashTagText!.length)) {
-
-
-                    let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString, contentImageString: <#String#>)
+                    
+                    let passedData = self.contentImageView.image?.jpegData(compressionQuality: 0.01)
+                    let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString, contentImageData: passedData!)
                     sendDBModel.sendHashTag(hashTag: hashTagText!.substring(with: match.range))
                 }
             }catch{
@@ -125,19 +125,37 @@ class TweetViewController: UIViewController {
     //編集内容をfireBaseにSendDBModelを使用して送信する
     @IBAction func send(_ sender: Any) {
         
+        if contentImageView.image != nil {
+            
+            let passData = contentImageView.image?.jpegData(compressionQuality: 0.01)
+            //ハッシュタグがついていれば、DBのハッシュタグのコレクションに保存
+            searchHashTag()
+            
+            //sendDBModelに編集内容を渡す
+            let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageData: passData!)
+            
+            //sendDataメソッドを使用する
+            sendDBModel.sendData()
+            
+            //selectVCに戻る
+            self.navigationController?.popViewController(animated: true)
+            print("ツイートしました")
+            
+        } else {
+            //ハッシュタグがついていれば、DBのハッシュタグのコレクションに保存
+            searchHashTag()
+            
+            //sendDBModelに編集内容を渡す
+            let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString)
+            
+            //sendDataメソッドを使用する
+            sendDBModel.sendData()
+            
+            //selectVCに戻る
+            self.navigationController?.popViewController(animated: true)
+            print("ツイートしました")
+        }
         
-        //ハッシュタグがついていれば、DBのハッシュタグのコレクションに保存
-        searchHashTag()
-        
-        //sendDBModelに編集内容を渡す
-        let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageString: <#String#>)
-        
-        //sendDataメソッドを使用する
-        sendDBModel.sendData()
-        
-        //selectVCに戻る
-        self.navigationController?.popViewController(animated: true)
-        print("ツイートしました")
     }
     
 }
