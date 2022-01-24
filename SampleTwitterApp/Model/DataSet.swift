@@ -9,6 +9,7 @@ import Foundation
 
 struct DataSet {
     
+    let docID:String
     let userID:String
     let userName:String
     let tweet:String

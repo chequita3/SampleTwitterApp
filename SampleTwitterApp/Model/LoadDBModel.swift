@@ -35,7 +35,7 @@ class LoadDBModel{
                     let data = doc.data()
                     if let userID = data["userID"] as? String,let userName = data["userName"] as? String,let tweet = data["tweet"] as? String,let profileImage = data["userImageString"] as? String,let contentImage = data["contentImage"]as? String,let postDate = data["postDate"] as? Double{
                         
-                        let newDataSet = DataSet(userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, contentImage: contentImage, postDate: postDate)
+                        let newDataSet = DataSet(docID: doc.documentID, userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, contentImage: contentImage, postDate: postDate)
                         
                         self.dataSets.append(newDataSet)
                         self.loadOKDelegate?.loadOK(check: 1)
@@ -63,7 +63,7 @@ class LoadDBModel{
                         let data = doc.data()
                         if let userID = data["userID"] as? String ,let userName = data["userName"] as? String, let tweet = data["tweet"] as? String,let profileImage = data["userImage"] as? String,let contentImage = data["contentImage"] as? String,let postDate = data["postDate"] as? Double {
                             
-                            let newDataSet = DataSet(userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, contentImage: contentImage, postDate: postDate)
+                            let newDataSet = DataSet(docID: doc.documentID, userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, contentImage: contentImage, postDate: postDate)
 
                             self.dataSets.append(newDataSet)
                             self.loadOKDelegate?.loadOK(check: 1)

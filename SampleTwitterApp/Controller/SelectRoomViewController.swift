@@ -131,11 +131,11 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let selectedTweet = loadDBModel.dataSets[indexPath.row].tweet
         //editVCへ画面遷移
         let editVC = self.storyboard?.instantiateViewController(identifier: "editVC") as! EditViewController
-        editVC.roomNumber = indexPath.row
-        editVC.passText = selectedTweet
+        editVC.tweetID = loadDBModel.dataSets[indexPath.row].docID
+        editVC.passText = loadDBModel.dataSets[indexPath.row].tweet
+        editVC.passImage = loadDBModel.dataSets[indexPath.row].contentImage
         self.navigationController?.pushViewController(editVC, animated: true)
     }
     

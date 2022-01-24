@@ -24,7 +24,7 @@ class SendDBModel {
     }
     
     init(userID:String,userName:String,tweet:String,userImageString:String,contentImageData:Data) {
-        
+
         self.userID = userID
         self.userName = userName
         self.tweet = tweet
