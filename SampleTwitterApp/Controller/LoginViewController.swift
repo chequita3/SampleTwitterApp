@@ -14,14 +14,14 @@ import PKHUD
 import FirebaseAuth
 
 class LoginViewController: UIViewController {
-
     
-
+    
+    
     fileprivate var currentNonce: String?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         if #available(iOS 13.0, *) {
             // ここでインスタンス(ボタン)を生成
             let appleLoginButton = ASAuthorizationAppleIDButton(
@@ -39,7 +39,7 @@ class LoginViewController: UIViewController {
             appleLoginButton.translatesAutoresizingMaskIntoConstraints = false
             // Viewに追加
             view.addSubview(appleLoginButton)
-
+            
             // ↓はAutoLayoutの設定
             // appleLoginButtonの中心を画面の中心にセットする
             appleLoginButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -50,7 +50,7 @@ class LoginViewController: UIViewController {
             appleLoginButton.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
         }
     }
-
+    
     @available(iOS 13.0, *)
     @objc func handleTappedAppleLoginButton(_ sender: ASAuthorizationAppleIDButton) {
         // ランダムの文字列を生成
@@ -68,14 +68,14 @@ class LoginViewController: UIViewController {
         controller.presentationContextProvider = self
         controller.performRequests()
     }
-
+    
     func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)
         let charset: Array<Character> =
-            Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
         var result = ""
         var remainingLength = length
-
+        
         while remainingLength > 0 {
             let randoms: [UInt8] = (0 ..< 16).map { _ in
                 var random: UInt8 = 0
@@ -85,12 +85,12 @@ class LoginViewController: UIViewController {
                 }
                 return random
             }
-
+            
             randoms.forEach { random in
                 if length == 0 {
                     return
                 }
-
+                
                 if random < charset.count {
                     result.append(charset[Int(random)])
                     remainingLength -= 1
@@ -99,7 +99,7 @@ class LoginViewController: UIViewController {
         }
         return result
     }
-
+    
     // ⑤SHA256を使用してハッシュ変換する関数を用意
     @available(iOS 13, *)
     private func sha256(_ input: String) -> String {
@@ -108,7 +108,7 @@ class LoginViewController: UIViewController {
         let hashString = hashedData.compactMap {
             return String(format: "%02x", $0)
         }.joined()
-
+        
         return hashString
     }
 }
@@ -155,7 +155,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
                 print(authResult)
                 // 必要に応じて
                 HUD.flash(.labeledSuccess(title: "ログイン完了", subtitle: nil), onView: self.view, delay: 1) { _ in
-
+                    
                     //ここにログインが完了した時に画面遷移などのコードを記述して下さい。
                     let registerVC = self.storyboard?.instantiateViewController(withIdentifier: "registerVC") as! RegisterViewController
                     self.navigationController?.pushViewController(registerVC, animated: true)
@@ -163,18 +163,18 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             }
         }
     }
-
+    
     // delegateのプロトコルに設定されているため、書いておく
     func presentationAnchor(for _: ASAuthorizationController) -> ASPresentationAnchor {
         return view.window!
     }
-
+    
     // Appleのログイン側でエラーがあった時に呼ばれる
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.
         print("Sign in with Apple errored: \(error)")
     }
-
-
+    
+    
 }
 

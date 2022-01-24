@@ -13,5 +13,6 @@ struct DataSet {
     let userName:String
     let tweet:String
     let profileImage:String
+    let contentImage:String
     let postDate:Double
 }

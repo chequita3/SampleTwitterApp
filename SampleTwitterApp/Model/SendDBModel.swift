@@ -47,7 +47,7 @@ class SendDBModel {
     //
     //        self.db.collection("roomNumber").document().setData(["userID" : self.userID as Any,"userName" : self.userName as Any,"tweet" : self.tweet as Any,"userImageString" : self.userImageString as Any,"postDate" : Date().timeIntervalSince1970])
     //    }
-    func sendData() {
+    func sendDataWithPhoto() {
         
         //storageへの参照を作成（分かりやすいようにIDと日時を入れる）
         let imageRef = Storage.storage().reference().child("Images").child("\(UUID().uuidString + String(Date().timeIntervalSince1970)).jpg")
@@ -55,7 +55,7 @@ class SendDBModel {
         //storageへ保存する
         imageRef.putData(contentImageData, metadata: nil) { [self] (metadata, error) in
             if error != nil{
-                print("storageへの保存に失敗したか、画像が選択されていません")
+                print("storageへの保存に失敗")
                 return
             }
             print("storageへの保存に成功しました")
@@ -74,6 +74,12 @@ class SendDBModel {
             }
         }
     }
+    
+    func sendData() {
+
+                self.db.collection("tweet").document().setData(["userID" : self.userID as Any,"userName" : self.userName as Any,"tweet" : self.tweet as Any,"userImageString" : self.userImageString as Any,"contentImage": String(""),"postDate" : Date().timeIntervalSince1970])
+            }
+  
     
     func sendProfileImageData(data:Data) {
         

@@ -9,20 +9,48 @@ import UIKit
 import Firebase
 
 class RegisterViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-
+    
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var registerButton: UIButton!
     
     var urlString = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //カメラ許可画面を出す
         let checkModel = CheckModel()
         checkModel.showCheckPermission()
-
+        
+        //キーボードが出現した時にshowKeyboadメソッドをNotificationCenterのエントリーに加える
+        NotificationCenter.default.addObserver(self, selector: #selector(showKeyboad), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        //キーボードが出現した時にhideKeyboadメソッドをNotificationCenterのエントリーに加える
+        NotificationCenter.default.addObserver(self, selector: #selector(hideKeyboad), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    //キーボードが出現した時のメソッド。ボタンとテキストビューの位置を調整する
+    @objc func showKeyboad(notification:NSNotification) {
+        print("キーボード出たよ")
+        let keyboadFrame = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        
+        guard let keyboadMiniY = keyboadFrame?.minY else { return }
+        let sendButtonMaxY = registerButton.frame.maxY
+        let distance = sendButtonMaxY - keyboadMiniY + 20
+        let transform = CGAffineTransform(translationX: 0, y: -distance)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: {self.view.transform = transform}, completion: nil)
+    }
+    
+    //キーボードが隠れた時のメソッド。動いたビューの位置を元に戻す
+    @objc func hideKeyboad(notification:NSNotification){
+        print("キーボード隠れたよ")
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: {self.view.transform = .identity}, completion: nil)
+    }
+    
+    
+    
+    
     
     @IBAction func register(_ sender: Any) {
         
@@ -43,55 +71,55 @@ class RegisterViewController: UIViewController,UIImagePickerControllerDelegate,U
     }
     
     func doCamera(){
+        
+        let sourceType:UIImagePickerController.SourceType = .camera
+        
+        //カメラ利用可能かチェック
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
             
-            let sourceType:UIImagePickerController.SourceType = .camera
+            let cameraPicker = UIImagePickerController()
+            cameraPicker.allowsEditing = true
+            cameraPicker.sourceType = sourceType
+            cameraPicker.delegate = self
+            self.present(cameraPicker, animated: true, completion: nil)
             
-            //カメラ利用可能かチェック
-            if UIImagePickerController.isSourceTypeAvailable(.camera){
-                
-                let cameraPicker = UIImagePickerController()
-                cameraPicker.allowsEditing = true
-                cameraPicker.sourceType = sourceType
-                cameraPicker.delegate = self
-                self.present(cameraPicker, animated: true, completion: nil)
-                
-                
-            }
             
         }
         
+    }
+    
+    
+    func doAlbum(){
         
-        func doAlbum(){
+        let sourceType:UIImagePickerController.SourceType = .photoLibrary
+        
+        //カメラ利用可能かチェック
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
             
-            let sourceType:UIImagePickerController.SourceType = .photoLibrary
+            let cameraPicker = UIImagePickerController()
+            cameraPicker.allowsEditing = true
+            cameraPicker.sourceType = sourceType
+            cameraPicker.delegate = self
+            self.present(cameraPicker, animated: true, completion: nil)
             
-            //カメラ利用可能かチェック
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
-                
-                let cameraPicker = UIImagePickerController()
-                cameraPicker.allowsEditing = true
-                cameraPicker.sourceType = sourceType
-                cameraPicker.delegate = self
-                self.present(cameraPicker, animated: true, completion: nil)
-                
-                
-            }
             
         }
         
+    }
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if info[.originalImage] as? UIImage != nil{
             
-            
-            if info[.originalImage] as? UIImage != nil{
-                
-                let selectedImage = info[.originalImage] as! UIImage
-                profileImageView.image = selectedImage
-                picker.dismiss(animated: true, completion: nil)
-                
-            }
+            let selectedImage = info[.originalImage] as! UIImage
+            profileImageView.image = selectedImage
+            picker.dismiss(animated: true, completion: nil)
             
         }
+        
+    }
     
     //imageViewをタップした時の挙動
     @IBAction func tapImageView(_ sender: Any) {
@@ -105,43 +133,51 @@ class RegisterViewController: UIViewController,UIImagePickerControllerDelegate,U
     }
     
     
-     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-         
-         picker.dismiss(animated: true, completion: nil)
-         
-     }
-     
-     
-     //アラート
-     func showAlert(){
-         
-         let alertController = UIAlertController(title: "選択", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
-         
-         let action1 = UIAlertAction(title: "カメラ", style: .default) { (alert) in
-             
-             self.doCamera()
-             
-         }
-         let action2 = UIAlertAction(title: "アルバム", style: .default) { (alert) in
-             
-             self.doAlbum()
-             
-         }
-
-         let action3 = UIAlertAction(title: "キャンセル", style: .cancel)
-         
-         
-         alertController.addAction(action1)
-         alertController.addAction(action2)
-         alertController.addAction(action3)
-         self.present(alertController, animated: true, completion: nil)
-         
-     }
-     
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+        picker.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    
+    //アラート
+    func showAlert(){
+        
+        let alertController = UIAlertController(title: "選択", message: "どちらを使用しますか?", preferredStyle: .actionSheet)
+        
+        let action1 = UIAlertAction(title: "カメラ", style: .default) { (alert) in
+            
+            self.doCamera()
+            
+        }
+        let action2 = UIAlertAction(title: "アルバム", style: .default) { (alert) in
+            
+            self.doAlbum()
+            
+        }
+        
+        let action3 = UIAlertAction(title: "キャンセル", style: .cancel)
+        
+        
+        alertController.addAction(action1)
+        alertController.addAction(action2)
+        alertController.addAction(action3)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
+    
     //画面をタップした時、キーボードを閉じる
-     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-         
-         textField.resignFirstResponder()
-         
-     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        textField.resignFirstResponder()
+        
+    }
+    
+    //キーボードのreturnキーをタップするとキーボードを閉じる
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+        return true
+        
+    }
 }

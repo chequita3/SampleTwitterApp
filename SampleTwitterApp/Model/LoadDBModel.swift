@@ -22,7 +22,7 @@ class LoadDBModel{
     
     func loadContents() {
         
-        db.collection("tweet").order(by: "postDate").addSnapshotListener {(snapShot, error) in
+        db.collection("tweet").order(by: "postDate", descending: true).addSnapshotListener {(snapShot, error) in
             
             if error != nil{
                 print("データの受信に失敗しました")
@@ -33,12 +33,11 @@ class LoadDBModel{
                 for doc in snapShotDoc{
                     
                     let data = doc.data()
-                    if let userID = data["userID"] as? String,let userName = data["userName"] as? String,let tweet = data["tweet"] as? String,let profileImage = data["userImageString"] as? String,let postDate = data["postDate"] as? Double{
+                    if let userID = data["userID"] as? String,let userName = data["userName"] as? String,let tweet = data["tweet"] as? String,let profileImage = data["userImageString"] as? String,let contentImage = data["contentImage"]as? String,let postDate = data["postDate"] as? Double{
                         
-                        let newDataSet = DataSet(userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, postDate: postDate)
+                        let newDataSet = DataSet(userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, contentImage: contentImage, postDate: postDate)
                         
                         self.dataSets.append(newDataSet)
-                        self.dataSets.reverse()
                         self.loadOKDelegate?.loadOK(check: 1)
                         print("データ受信します")
                     }
@@ -50,7 +49,7 @@ class LoadDBModel{
     
     func loadHashTag(hashTag:String){
             //addSnapShotListnerは値が更新される度に自動で呼ばれる
-            db.collection("#\(hashTag)").order(by:"postDate").addSnapshotListener { (snapShot, error) in
+            db.collection("#\(hashTag)").order(by:"postDate", descending: true).addSnapshotListener { (snapShot, error) in
                 
                 self.dataSets = []
                 
@@ -62,12 +61,11 @@ class LoadDBModel{
        
                     for doc in snapShotDoc{
                         let data = doc.data()
-                        if let userID = data["userID"] as? String ,let userName = data["userName"] as? String, let tweet = data["tweet"] as? String,let profileImage = data["userImage"] as? String,let postDate = data["postDate"] as? Double {
+                        if let userID = data["userID"] as? String ,let userName = data["userName"] as? String, let tweet = data["tweet"] as? String,let profileImage = data["userImage"] as? String,let contentImage = data["contentImage"] as? String,let postDate = data["postDate"] as? Double {
                             
-                            let newDataSet = DataSet(userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, postDate: postDate)
+                            let newDataSet = DataSet(userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, contentImage: contentImage, postDate: postDate)
 
                             self.dataSets.append(newDataSet)
-                            self.dataSets.reverse()
                             self.loadOKDelegate?.loadOK(check: 1)
 
                         }

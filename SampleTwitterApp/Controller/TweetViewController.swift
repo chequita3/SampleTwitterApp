@@ -12,7 +12,7 @@ import PKHUD
 import SDWebImage
 
 class TweetViewController: UIViewController {
-
+    
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var wordCountLabel: UILabel!
@@ -25,8 +25,8 @@ class TweetViewController: UIViewController {
     var userName = String()
     var userImageString = String()
     var maxWordCount: Int = 140
-
-
+    
+    
     
     
     override func viewDidLoad() {
@@ -53,68 +53,47 @@ class TweetViewController: UIViewController {
         profileImageView.layer.cornerRadius = 40
         userNameLabel.text = userName
         
-        //キーボードが出現した時にshowKeyboadメソッドをNotificationCenterのエントリーに加える
-//        NotificationCenter.default.addObserver(self, selector: #selector(showKeyboad), name: UIResponder.keyboardWillShowNotification, object: nil)
-//
-//        //キーボードが出現した時にhideKeyboadメソッドをNotificationCenterのエントリーに加える
-//        NotificationCenter.default.addObserver(self, selector: #selector(hideKeyboad), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
     }
     
-    //キーボードが出現した時のメソッド。ボタンとテキストビューの位置を調整する
-//    @objc func showKeyboad(notification:NSNotification) {
-//        print("キーボード出たよ")
-//        let keyboadFrame = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
-//
-//        guard let keyboadMiniY = keyboadFrame?.minY else { return }
-//        let sendButtonMaxY = sendButton.frame.maxY
-//        let distance = sendButtonMaxY - keyboadMiniY + 20
-//        let transform = CGAffineTransform(translationX: 0, y: -distance)
-//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: {self.view.transform = transform}, completion: nil)
-//    }
-//
-//    //キーボードが隠れた時のメソッド。動いたビューの位置を元に戻す
-//    @objc func hideKeyboad(notification:NSNotification){
-//        print("キーボード隠れたよ")
-//        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: {self.view.transform = .identity}, completion: nil)
-//    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
-           super.viewWillAppear(animated)
-           
-           navigationController?.setNavigationBarHidden(true, animated: true)
-           
-       }
+        super.viewWillAppear(animated)
+        
+        //           navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     
     //viewをタップしたときにキーボードを閉じる
-       override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-           
-           self.view.endEditing(true)
-           
-       }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        self.view.endEditing(true)
+        
+    }
     
     
     //キーボードのreturnキーをタップするとキーボードを閉じる
-       func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-           
-           tweetTextView.resignFirstResponder()
-           return true
-           
-       }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        tweetTextView.resignFirstResponder()
+        return true
+        
+    }
     
     func searchHashTag(){
-
-     let hashTagText = tweetTextView.text as NSString?
-            do{
-                let regex = try NSRegularExpression(pattern: "#\\S+", options: [])
-                for match in regex.matches(in: hashTagText! as String, options: [], range: NSRange(location: 0, length: hashTagText!.length)) {
-                    
-                    let passedData = self.contentImageView.image?.jpegData(compressionQuality: 0.01)
-                    let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString, contentImageData: passedData!)
-                    sendDBModel.sendHashTag(hashTag: hashTagText!.substring(with: match.range))
-                }
-            }catch{
+        
+        let hashTagText = tweetTextView.text as NSString?
+        do{
+            let regex = try NSRegularExpression(pattern: "#\\S+", options: [])
+            for match in regex.matches(in: hashTagText! as String, options: [], range: NSRange(location: 0, length: hashTagText!.length)) {
                 
+                let passedData = self.contentImageView.image?.jpegData(compressionQuality: 0.01)
+                let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString, contentImageData: passedData!)
+                sendDBModel.sendHashTag(hashTag: hashTagText!.substring(with: match.range))
             }
+        }catch{
+            
+        }
     }
     
     
@@ -134,14 +113,16 @@ class TweetViewController: UIViewController {
             //sendDBModelに編集内容を渡す
             let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageData: passData!)
             
-            //sendDataメソッドを使用する
-            sendDBModel.sendData()
+            //sendDataWithPhotoメソッドを使用する
+            sendDBModel.sendDataWithPhoto()
             
             //selectVCに戻る
             self.navigationController?.popViewController(animated: true)
-            print("ツイートしました")
+            print("画像つきでツイートしました")
             
         } else {
+            
+            
             //ハッシュタグがついていれば、DBのハッシュタグのコレクションに保存
             searchHashTag()
             
@@ -164,39 +145,39 @@ class TweetViewController: UIViewController {
 extension TweetViewController: UITextViewDelegate {
     
     //TextView内の文字数が改行数含めて140以内じゃないと文字入力できなくする
-func textView(_ tweetTextView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-    
-    //既存の改行した数
-    let existingLines = tweetTextView.text.components(separatedBy: .newlines)
-    
-    //新規改行数
-    let newLines = text.components(separatedBy: .newlines)
-    
-    //最終的な改行数。-1は編集したら必ず1改行としてカウントされるから。
-    let linesAfterChange = existingLines.count + newLines.count - 1
-    
-    //最終的な改行数が8以内かつ、ツイート文字数が140カウント以内であればtrueを返し、文字入力が可能になる
-    return linesAfterChange <= 8 && tweetTextView.text.count + (text.count - range.length) <= maxWordCount
-}
+    func textView(_ tweetTextView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        //既存の改行した数
+        let existingLines = tweetTextView.text.components(separatedBy: .newlines)
+        
+        //新規改行数
+        let newLines = text.components(separatedBy: .newlines)
+        
+        //最終的な改行数。-1は編集したら必ず1改行としてカウントされるから。
+        let linesAfterChange = existingLines.count + newLines.count - 1
+        
+        //最終的な改行数が8以内かつ、ツイート文字数が140カウント以内であればtrueを返し、文字入力が可能になる
+        return linesAfterChange <= 8 && tweetTextView.text.count + (text.count - range.length) <= maxWordCount
+    }
     
     //TextViewの内容が変わるたびに実行される
-func textViewDidChange(_ tweetTextView: UITextView) {
-    
-    //既に存在する改行数
-    let existingLines = tweetTextView.text.components(separatedBy: .newlines)
-    //改行数が8以内であればwordCountLabelに文字数を反映
-    if existingLines.count <= 8 {
-        self.wordCountLabel.text = "\(maxWordCount - tweetTextView.text.count)"
+    func textViewDidChange(_ tweetTextView: UITextView) {
         
-        
+        //既に存在する改行数
+        let existingLines = tweetTextView.text.components(separatedBy: .newlines)
+        //改行数が8以内であればwordCountLabelに文字数を反映
+        if existingLines.count <= 8 {
+            self.wordCountLabel.text = "\(maxWordCount - tweetTextView.text.count)"
+            
+            
+        }
     }
-}
-        
+    
     //文字入力を始めたら、プレースホルダーを消去
     func textViewDidBeginEditing(_ tweetTextView: UITextView) {
         self.placeHolder.isHidden = true
     }
- 
+    
     
     func textViewDidChangeSelection(_ textView: UITextView) {
         if tweetTextView.text.isEmpty == true{
@@ -209,9 +190,9 @@ func textViewDidChange(_ tweetTextView: UITextView) {
             print("ボタン使用可能")
         }
     }
-        
-    }
     
+}
+
 
 
 extension TweetViewController: UIImagePickerControllerDelegate,UINavigationControllerDelegate{
@@ -223,55 +204,55 @@ extension TweetViewController: UIImagePickerControllerDelegate,UINavigationContr
     }
     
     func doCamera(){
+        
+        let sourceType:UIImagePickerController.SourceType = .camera
+        
+        //カメラ利用可能かチェック
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
             
-            let sourceType:UIImagePickerController.SourceType = .camera
+            let cameraPicker = UIImagePickerController()
+            cameraPicker.allowsEditing = true
+            cameraPicker.sourceType = sourceType
+            cameraPicker.delegate = self
+            self.present(cameraPicker, animated: true, completion: nil)
             
-            //カメラ利用可能かチェック
-            if UIImagePickerController.isSourceTypeAvailable(.camera){
-                
-                let cameraPicker = UIImagePickerController()
-                cameraPicker.allowsEditing = true
-                cameraPicker.sourceType = sourceType
-                cameraPicker.delegate = self
-                self.present(cameraPicker, animated: true, completion: nil)
-                
-                
-            }
             
         }
         
+    }
+    
+    
+    func doAlbum(){
         
-        func doAlbum(){
+        let sourceType:UIImagePickerController.SourceType = .photoLibrary
+        
+        //カメラ利用可能かチェック
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
             
-            let sourceType:UIImagePickerController.SourceType = .photoLibrary
+            let cameraPicker = UIImagePickerController()
+            cameraPicker.allowsEditing = true
+            cameraPicker.sourceType = sourceType
+            cameraPicker.delegate = self
+            self.present(cameraPicker, animated: true, completion: nil)
             
-            //カメラ利用可能かチェック
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
-                
-                let cameraPicker = UIImagePickerController()
-                cameraPicker.allowsEditing = true
-                cameraPicker.sourceType = sourceType
-                cameraPicker.delegate = self
-                self.present(cameraPicker, animated: true, completion: nil)
-                
-                
-            }
             
         }
         
+    }
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if info[.originalImage] as? UIImage != nil{
             
-            
-            if info[.originalImage] as? UIImage != nil{
-                
-                let selectedImage = info[.originalImage] as! UIImage
-                contentImageView.image = selectedImage
-                picker.dismiss(animated: true, completion: nil)
-                
-            }
+            let selectedImage = info[.originalImage] as! UIImage
+            contentImageView.image = selectedImage
+            picker.dismiss(animated: true, completion: nil)
             
         }
+        
+    }
     //アラート
     func showAlert(){
         
@@ -287,7 +268,7 @@ extension TweetViewController: UIImagePickerControllerDelegate,UINavigationContr
             self.doAlbum()
             
         }
-
+        
         let action3 = UIAlertAction(title: "キャンセル", style: .cancel)
         
         
@@ -299,9 +280,9 @@ extension TweetViewController: UIImagePickerControllerDelegate,UINavigationContr
     }
 }
 
-    
-    
-    
+
+
+
 
 
 

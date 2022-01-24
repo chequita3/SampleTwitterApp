@@ -12,49 +12,46 @@ import ActiveLabel
 import SDWebImage
 
 class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,loadOKDelegate {
-
+    
     
     
     var loadDBModel = LoadDBModel()
-    //var roomArray = ["今日の1枚","爆笑報告場(草)","景色が好き！","夜景写真軍団","今日のごはん"]
     
-    //var imageArray = ["0","1","2","3","4"]
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableView.delegate = self
         tableView.dataSource = self
         loadDBModel.loadOKDelegate = self
-        // Do any additional setup after loading the view.
+        
+        
     }
     
-    func loadOK(check: Int) {
-        if check == 1{
-            print("ロード完了、セルを表示します")
-            tableView.reloadData()
-        }
-    }
     
-//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 756
-//    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationController?.isNavigationBarHidden = true
-        //tableView.isHidden = true
         loadDBModel.loadContents()
         
+    }
+    
+    func loadOK(check: Int) {
+        if check == 1{
+            print("テーブルビューをリロード")
+            tableView.reloadData()
+        }
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //tableView.isHidden = false
+        tableView.isHidden = false
         
         //viewを表示する際のアニメーションの設定
         let animation = [AnimationType.vector(CGVector(dx: 0, dy: 30))]
@@ -69,12 +66,14 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        tableView.rowHeight = 200
-
+        
+        
+        
+        
         //アイコン画像をセルにセット
         let profileImageView = cell.contentView.viewWithTag(1) as! UIImageView
         
@@ -96,6 +95,18 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         tweetTextLabel.enabledTypes = [.hashtag]
         tweetTextLabel.text = "\(loadDBModel.dataSets[indexPath.row].tweet)"
         
+        
+        let contentImageView = cell.contentView.viewWithTag(4) as! UIImageView
+        
+        contentImageView.isHidden = true
+        
+        
+        if loadDBModel.dataSets[indexPath.row].contentImage != "" {
+            contentImageView.isHidden = false
+            contentImageView.sd_setImage(with: URL(string: loadDBModel.dataSets[indexPath.row].contentImage), completed: nil)
+        }
+        
+        
         //ハッシュタグがタップされた時の挙動
         tweetTextLabel.handleHashtagTap { (hashTag) in
             print(hashTag)
@@ -112,11 +123,11 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        tableView.estimatedRowHeight = 211
+        tableView.estimatedRowHeight = 515
         return UITableView.automaticDimension
-    
     }
+    
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -136,3 +147,4 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         self.navigationController?.pushViewController(tweetVC, animated: true)
     }
 }
+

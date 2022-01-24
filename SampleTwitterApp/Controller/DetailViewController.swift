@@ -27,7 +27,7 @@ class DetailViewController: UIViewController {
         tweetTextLabel.text = tweet
     }
     
-
-
-
+    
+    
+    
 }
