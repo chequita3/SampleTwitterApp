@@ -17,36 +17,35 @@ class SendDBModel {
     var tweet = String()
     var userImageString = String()
     var contentImageData = Data()
+    var tweetID = String()
     var db = Firestore.firestore()
     
     init() {
         
     }
     
-    init(userID:String,userName:String,tweet:String,userImageString:String,contentImageData:Data) {
+    init(userID:String,userName:String,tweet:String,userImageString:String,contentImageData:Data,tweetID:String) {
 
         self.userID = userID
         self.userName = userName
         self.tweet = tweet
         self.userImageString = userImageString
         self.contentImageData = contentImageData
+        self.tweetID = tweetID
         
     }
     
-    init(userID:String,userName:String,tweet:String,userImageString:String) {
+    init(userID:String,userName:String,tweet:String,userImageString:String,tweetID:String) {
         
         self.userID = userID
         self.userName = userName
         self.tweet = tweet
         self.userImageString = userImageString
+        self.tweetID = tweetID
         
     }
     
-    //ID、名前、ツイート、プロフ画像URL、投稿日時をfireStoreのroomNumberコレクションに保存
-    //    func sendData(roomNumber:String) {
-    //
-    //        self.db.collection("roomNumber").document().setData(["userID" : self.userID as Any,"userName" : self.userName as Any,"tweet" : self.tweet as Any,"userImageString" : self.userImageString as Any,"postDate" : Date().timeIntervalSince1970])
-    //    }
+
     func sendDataWithPhoto() {
         
         //storageへの参照を作成（分かりやすいようにIDと日時を入れる）
@@ -145,6 +144,11 @@ class SendDBModel {
         
     }
     
+    func sendEditedData() {
+
+        self.db.collection("tweet").document("\(self.tweetID)").setData(["userID" : self.userID as Any,"userName" : self.userName as Any,"tweet" : self.tweet as Any,"userImageString" : self.userImageString as Any,"contentImage": String(""),"postDate" : Date().timeIntervalSince1970])
+            }
+
 }
 
 

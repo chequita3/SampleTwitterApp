@@ -35,7 +35,7 @@ class EditViewController: UIViewController {
         if passImage != "" {
             contentImageView.sd_setImage(with: URL(string: passImage), completed: nil)
         }
-
+        
         if UserDefaults.standard.object(forKey: "userName") != nil {
             userName = UserDefaults.standard.object(forKey: "userName") as! String
         }
@@ -52,11 +52,11 @@ class EditViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         
     }
     
-
+    
     //viewをタップしたときにキーボードを閉じる
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -73,22 +73,67 @@ class EditViewController: UIViewController {
     }
     
     //編集内容をfireBaseにSendDBModelを使用して送信する
-    @IBAction func send(_ sender: Any) {
+    @IBAction func sendEditData(_ sender: Any) {
         
-        if tweetTextView.text.isEmpty == true{
-            print("ツイートテキストに何も書いていません")
-            return
+        if contentImageView.image != nil {
+            
+            let passData = contentImageView.image?.jpegData(compressionQuality: 0.01)
+            //ハッシュタグがついていれば、DBのハッシュタグのコレクションに保存
+            searchHashTag()
+            
+            //sendDBModelに編集内容を渡す
+            let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageData: passData!, tweetID: tweetID)
+            
+            //sendDataWithPhotoメソッドを使用する
+            sendDBModel.sendDataWithPhoto()
+            
+            //selectVCに戻る
+            self.navigationController?.popViewController(animated: true)
+            print("画像つきでツイートしました")
+            
+        } else {
+            
+            
+            //ハッシュタグがついていれば、DBのハッシュタグのコレクションに保存
+            searchHashTag()
+            
+            //sendDBModelに編集内容を渡す
+            let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, tweetID: tweetID)
+            
+            //sendDataメソッドを使用する
+            sendDBModel.sendEditedData()
+            
+            self.navigationController?.popViewController(animated: true)
         }
-        
-        //sendDBModelに編集内容を渡す
-        //        let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageData: <#String#>)
-        
-        //sendDataメソッドにroomNumberを渡して使用する
-        //        sendDBModel.sendData(roomNumber: String(roomNumber))
-        //        sendDBModel.sendData()
-        //selectVCに戻る
-        self.navigationController?.popViewController(animated: true)
     }
     
+    func searchHashTag(){
+        
+        let hashTagText = tweetTextView.text as NSString?
+        do{
+            let regex = try NSRegularExpression(pattern: "#\\S+", options: [])
+            for match in regex.matches(in: hashTagText! as String, options: [], range: NSRange(location: 0, length: hashTagText!.length)) {
+                
+                let passedData = self.contentImageView.image?.jpegData(compressionQuality: 0.01)
+                let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString, contentImageData: passedData!, tweetID: self.tweetID)
+                sendDBModel.sendHashTag(hashTag: hashTagText!.substring(with: match.range))
+            }
+        }catch{
+            
+        }
+    }
+    
+    //ツイート削除
+    @IBAction func removeTweet(_ sender: Any) {
+        
+        Firestore.firestore().collection("tweet").document("\(self.tweetID)").delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
+        self.navigationController?.popViewController(animated: true)
+    }
     
 }

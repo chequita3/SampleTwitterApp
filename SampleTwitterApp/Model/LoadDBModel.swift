@@ -24,6 +24,8 @@ class LoadDBModel{
         
         db.collection("tweet").order(by: "postDate", descending: true).addSnapshotListener {(snapShot, error) in
             
+            self.dataSets = []
+            
             if error != nil{
                 print("データの受信に失敗しました")
                 return
@@ -32,6 +34,8 @@ class LoadDBModel{
                 
                 for doc in snapShotDoc{
                     
+                    
+                    
                     let data = doc.data()
                     if let userID = data["userID"] as? String,let userName = data["userName"] as? String,let tweet = data["tweet"] as? String,let profileImage = data["userImageString"] as? String,let contentImage = data["contentImage"]as? String,let postDate = data["postDate"] as? Double{
                         
@@ -39,7 +43,7 @@ class LoadDBModel{
                         
                         self.dataSets.append(newDataSet)
                         self.loadOKDelegate?.loadOK(check: 1)
-                        print("データ受信します")
+                        print("データを受信しました")
                     }
                 }
             }
@@ -64,9 +68,10 @@ class LoadDBModel{
                         if let userID = data["userID"] as? String ,let userName = data["userName"] as? String, let tweet = data["tweet"] as? String,let profileImage = data["userImage"] as? String,let contentImage = data["contentImage"] as? String,let postDate = data["postDate"] as? Double {
                             
                             let newDataSet = DataSet(docID: doc.documentID, userID: userID, userName: userName, tweet: tweet, profileImage: profileImage, contentImage: contentImage, postDate: postDate)
-
+                            
                             self.dataSets.append(newDataSet)
                             self.loadOKDelegate?.loadOK(check: 1)
+                            
 
                         }
                         

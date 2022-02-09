@@ -61,7 +61,7 @@ class TweetViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        //           navigationController?.setNavigationBarHidden(false, animated: true)
+                  navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     //viewをタップしたときにキーボードを閉じる
@@ -88,7 +88,7 @@ class TweetViewController: UIViewController {
             for match in regex.matches(in: hashTagText! as String, options: [], range: NSRange(location: 0, length: hashTagText!.length)) {
                 
                 let passedData = self.contentImageView.image?.jpegData(compressionQuality: 0.01)
-                let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString, contentImageData: passedData!)
+                let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString, contentImageData: passedData!, tweetID: "")
                 sendDBModel.sendHashTag(hashTag: hashTagText!.substring(with: match.range))
             }
         }catch{
@@ -111,7 +111,7 @@ class TweetViewController: UIViewController {
             searchHashTag()
             
             //sendDBModelに編集内容を渡す
-            let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageData: passData!)
+            let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, contentImageData: passData!, tweetID: "")
             
             //sendDataWithPhotoメソッドを使用する
             sendDBModel.sendDataWithPhoto()
@@ -127,7 +127,7 @@ class TweetViewController: UIViewController {
             searchHashTag()
             
             //sendDBModelに編集内容を渡す
-            let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString)
+            let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: userName, tweet: tweetTextView.text, userImageString: userImageString, tweetID: "")
             
             //sendDataメソッドを使用する
             sendDBModel.sendData()

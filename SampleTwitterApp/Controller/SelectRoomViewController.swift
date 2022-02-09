@@ -7,6 +7,7 @@
 
 import UIKit
 import ViewAnimator
+import FirebaseAuth
 import Photos
 import ActiveLabel
 import SDWebImage
@@ -38,7 +39,7 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         
         self.navigationController?.isNavigationBarHidden = true
         loadDBModel.loadContents()
-        
+        print("\(loadDBModel.dataSets)")
     }
     
     func loadOK(check: Int) {
@@ -75,6 +76,7 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         
         
         //アイコン画像をセルにセット
+        
         let profileImageView = cell.contentView.viewWithTag(1) as! UIImageView
         
         //SDWebImageライブラリを使用して、URLからprofileImageViewに画像をセットする
@@ -145,6 +147,19 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         //tweetVCへ画面遷移
         let tweetVC = self.storyboard?.instantiateViewController(withIdentifier: "tweetVC") as! TweetViewController
         self.navigationController?.pushViewController(tweetVC, animated: true)
+    }
+    
+    
+    @IBAction func logout(_ sender: Any) {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+        } catch let error as NSError {
+            print("エラー",error)
+        }
+        
+        self.navigationController?.popToRootViewController(animated: true)
+        
     }
 }
 
