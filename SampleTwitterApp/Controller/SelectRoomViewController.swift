@@ -39,7 +39,6 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         
         self.navigationController?.isNavigationBarHidden = true
         loadDBModel.loadContents()
-        print("\(loadDBModel.dataSets)")
     }
     
     func loadOK(check: Int) {
@@ -102,7 +101,6 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         
         contentImageView.isHidden = true
         
-        
         if loadDBModel.dataSets[indexPath.row].contentImage != "" {
             contentImageView.isHidden = false
             contentImageView.sd_setImage(with: URL(string: loadDBModel.dataSets[indexPath.row].contentImage), completed: nil)
@@ -157,8 +155,10 @@ class SelectRoomViewController: UIViewController,UITableViewDelegate,UITableView
         } catch let error as NSError {
             print("エラー",error)
         }
+
         
         self.navigationController?.popToRootViewController(animated: true)
+        print("最初に戻るよ")
         
     }
 }

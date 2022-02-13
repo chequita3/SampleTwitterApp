@@ -115,7 +115,7 @@ class SendDBModel {
     
     
     
-    func sendHashTag(hashTag:String){
+    func sendHashTagWithPhoto(hashTag:String){
         
         //storageへの参照を作成（分かりやすいようにIDと日時を入れる）
         let imageRef = Storage.storage().reference().child(hashTag).child("\(UUID().uuidString + String(Date().timeIntervalSince1970)).jpg")
@@ -144,10 +144,44 @@ class SendDBModel {
         
     }
     
+    func sendHashTag(hashTag:String){
+        
+        self.db.collection(hashTag).document().setData(["userID" : self.userID as Any,"userName" : self.userName as Any,"tweet" : self.tweet as Any,"userImageString" : self.userImageString as Any,"contentImage": "", "postDate" : Date().timeIntervalSince1970])
+    }
+    
+    
     func sendEditedData() {
 
         self.db.collection("tweet").document("\(self.tweetID)").setData(["userID" : self.userID as Any,"userName" : self.userName as Any,"tweet" : self.tweet as Any,"userImageString" : self.userImageString as Any,"contentImage": String(""),"postDate" : Date().timeIntervalSince1970])
             }
+    
+    func sendEditedDataWithPhoto() {
+        
+        //storageへの参照を作成（分かりやすいようにIDと日時を入れる）
+        let imageRef = Storage.storage().reference().child("Images").child("\(UUID().uuidString + String(Date().timeIntervalSince1970)).jpg")
+        
+        //storageへ保存する
+        imageRef.putData(contentImageData, metadata: nil) { [self] (metadata, error) in
+            if error != nil{
+                print("storageへの保存に失敗")
+                return
+            }
+            print("storageへの保存に成功しました")
+            
+            //保存に成功した場合、ダウンロード用のURLを受け取る
+            imageRef.downloadURL {(url, error) in
+                if error != nil{
+                    print("ダウンロードURLの取得に失敗しました")
+                    return
+                }
+                print("ダウンロードURLの取得に成功しました")
+                
+                
+                
+                self.db.collection("tweet").document("\(self.tweetID)").setData(["userID" : self.userID as Any,"userName" : self.userName as Any,"tweet" : self.tweet as Any,"userImageString" : self.userImageString as Any,"contentImage": url?.absoluteString as Any,"postDate" : Date().timeIntervalSince1970])
+            }
+        }
+    }
 
 }
 

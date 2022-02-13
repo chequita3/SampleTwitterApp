@@ -33,6 +33,13 @@ class HashTagViewController: UIViewController,UITableViewDelegate,UITableViewDat
         super.viewWillAppear(animated)
         
         loadDBModel.loadHashTag(hashTag: hashTag)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    func loadOK(check: Int) {
+        if check == 1{
+            tableView.reloadData()
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -51,6 +58,25 @@ class HashTagViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
         let profileImageView = cell.contentView.viewWithTag(1) as! UIImageView
         profileImageView.sd_setImage(with: URL(string: loadDBModel.dataSets[indexPath.row].profileImage), completed: nil)
+        profileImageView.layer.cornerRadius = 40
+        
+        
+        let userNameLabel = cell.contentView.viewWithTag(2) as! UILabel
+        userNameLabel.text = loadDBModel.dataSets[indexPath.row].userName
+        
+        
+        let tweetTextLabel = cell.contentView.viewWithTag(3) as! UILabel
+        tweetTextLabel.text = "\(loadDBModel.dataSets[indexPath.row].tweet)"
+        
+        
+        let contentImageView = cell.contentView.viewWithTag(4) as! UIImageView
+        
+        contentImageView.isHidden = true
+        
+        if loadDBModel.dataSets[indexPath.row].contentImage != "" {
+            contentImageView.isHidden = false
+            contentImageView.sd_setImage(with: URL(string: loadDBModel.dataSets[indexPath.row].contentImage), completed: nil)
+        }
         
         return cell
     }
@@ -65,11 +91,10 @@ class HashTagViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
     
-    func loadOK(check: Int) {
-        
-        if check == 1{
-            tableView.reloadData()
-        }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        tableView.estimatedRowHeight = 515
+        return UITableView.automaticDimension
     }
+    
     
 }

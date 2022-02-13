@@ -87,9 +87,14 @@ class TweetViewController: UIViewController {
             let regex = try NSRegularExpression(pattern: "#\\S+", options: [])
             for match in regex.matches(in: hashTagText! as String, options: [], range: NSRange(location: 0, length: hashTagText!.length)) {
                 
+                if contentImageView.image != nil {
                 let passedData = self.contentImageView.image?.jpegData(compressionQuality: 0.01)
                 let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString:self.userImageString, contentImageData: passedData!, tweetID: "")
-                sendDBModel.sendHashTag(hashTag: hashTagText!.substring(with: match.range))
+                sendDBModel.sendHashTagWithPhoto(hashTag: hashTagText!.substring(with: match.range))
+                }else{
+                    let sendDBModel = SendDBModel(userID: Auth.auth().currentUser!.uid, userName: self.userName, tweet: self.tweetTextView.text, userImageString: self.userImageString, tweetID: "")
+                    sendDBModel.sendHashTag(hashTag: hashTagText!.substring(with: match.range))
+                }
             }
         }catch{
             
@@ -247,7 +252,9 @@ extension TweetViewController: UIImagePickerControllerDelegate,UINavigationContr
         if info[.originalImage] as? UIImage != nil{
             
             let selectedImage = info[.originalImage] as! UIImage
-            contentImageView.image = selectedImage
+            let Resize:CGSize = CGSize.init(width: 370, height:370)
+            let resizedImage = selectedImage.resize(size: Resize)
+            contentImageView.image = resizedImage
             picker.dismiss(animated: true, completion: nil)
             
         }
@@ -279,6 +286,7 @@ extension TweetViewController: UIImagePickerControllerDelegate,UINavigationContr
         
     }
 }
+
 
 
 

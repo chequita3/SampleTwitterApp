@@ -19,6 +19,7 @@
 		98A12DD2278C2D0000C54F4F /* LoadDBModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A12DD1278C2D0000C54F4F /* LoadDBModel.swift */; };
 		98A12DD4278C2D4200C54F4F /* DataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A12DD3278C2D4100C54F4F /* DataSet.swift */; };
 		98AEE0C527127BD8007E30FC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98AEE0C427127BD8007E30FC /* GoogleService-Info.plist */; };
+		98C1A99927B948A2007B8F92 /* UIImageExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C1A99827B948A2007B8F92 /* UIImageExtention.swift */; };
 		98C512AD26C0156D000471A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C512AC26C0156D000471A6 /* AppDelegate.swift */; };
 		98C512AF26C0156D000471A6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C512AE26C0156D000471A6 /* SceneDelegate.swift */; };
 		98C512B126C0156D000471A6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C512B026C0156D000471A6 /* LoginViewController.swift */; };
@@ -43,6 +44,7 @@
 		98A12DD1278C2D0000C54F4F /* LoadDBModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadDBModel.swift; sourceTree = "<group>"; };
 		98A12DD3278C2D4100C54F4F /* DataSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSet.swift; sourceTree = "<group>"; };
 		98AEE0C427127BD8007E30FC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		98C1A99827B948A2007B8F92 /* UIImageExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtention.swift; sourceTree = "<group>"; };
 		98C512A926C0156D000471A6 /* SampleTwitterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleTwitterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98C512AC26C0156D000471A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98C512AE26C0156D000471A6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				98A12DD1278C2D0000C54F4F /* LoadDBModel.swift */,
 				98A12DD3278C2D4100C54F4F /* DataSet.swift */,
 				987984E3279289B900872051 /* UIColorExtention.swift */,
+				98C1A99827B948A2007B8F92 /* UIImageExtention.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				98A12DCE278C086500C54F4F /* TweetViewController.swift in Sources */,
 				98A12DD4278C2D4200C54F4F /* DataSet.swift in Sources */,
 				98A12DC6278BF53B00C54F4F /* RegisterViewController.swift in Sources */,
+				98C1A99927B948A2007B8F92 /* UIImageExtention.swift in Sources */,
 				98A12DCC278BF9DB00C54F4F /* SendDBModel.swift in Sources */,
 				98A12DCA278BF7C100C54F4F /* SelectRoomViewController.swift in Sources */,
 				98962B9C278C898400EECD9E /* HashTagViewController.swift in Sources */,
